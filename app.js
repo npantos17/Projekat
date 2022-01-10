@@ -1,4 +1,9 @@
 const express = require("express");
+const { sequelize } = require('./models');
+const msgs = require('./routes/messages');
+const path = require('path');
+const jwt = require('jsonwebtoken');
+require('dotenv').config();
 
 const app = express();
 

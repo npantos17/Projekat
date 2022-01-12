@@ -1,20 +1,24 @@
 const express = require("express");
 const { sequelize } = require('./models');
-const msgs = require('./routes/messages');
+const cars = require('./routes/cars');
 const path = require('path');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
 const app = express();
 
-app.get("/", (req, res)=>{
-    res.send("Hello worlds");
-    console.log(req);
-})
+app.use('/api', cars);
 
-app.get("/test", (req, res)=>{
-    res.send("Hello test");
-    console.log(req);
-})
+app.use(express.static(path.join(__dirname, 'static')));
 
-app.listen(8000);
+app.get('/', (req, res) => {
+    res.sendFile('index.html');
+});
+
+app.get('/test', (req, res) => {
+    res.sendFile('index.html');
+});
+
+app.listen({ port: 8000 }, async () => {
+    await sequelize.authenticate();
+});

@@ -11,11 +11,17 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      orderID:{
-        type: Sequelize.INTEGER
-      },
       name: {
         type: Sequelize.STRING
+      },
+      password: {
+        type: Sequelize.STRING,
+        allowNull: false
+      },
+      admin: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false,
+        defaultValue: false
       },
       email: {
         type: Sequelize.STRING

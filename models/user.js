@@ -11,11 +11,20 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate({ Order }) {
       // define association here
-       this.hasMany(Order, {foreignKey:'orderID', as:'orders', onDelete:'cascade', hooks:true});
+       this.hasMany(Order, {foreignKey:'buyerID', as:'buyer'});
     }
   };
   User.init({
     name: DataTypes.STRING,
+    password: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    admin: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false
+    },
     email: {
       type: DataTypes.STRING,
       allowNull: false,

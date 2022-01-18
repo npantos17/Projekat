@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       this.hasOne(Car)
       this.hasOne(Seller, {foreignKey:'sellerID', as:'seller'})
-      this.hasOne(User, {foreignKey:'buyerID', as:'buyer'})
+      //this.hasOne(User, {foreignKey:'buyerID', as:'buyer'})
 
     }
   };

@@ -10,7 +10,7 @@ require('dotenv').config();
 
 const app = express();
 
-app.use('/api', cars);
+app.use('/api', cars)
 app.use('/api', orders)
 app.use('/api', sellers)
 app.use('/api', users)
@@ -54,12 +54,12 @@ app.get('/login', (req, res) => {
     res.sendFile('login.html', { root: './static' });
 });
 
-app.use(express.static(path.join(__dirname, 'static')));
-
-app.get('/', (req, res) => {
-    res.sendFile('index.html');
+app.get('/', authToken, (req, res) => {
+    res.sendFile('index.html', { root: './static' });
 });
 
+
+app.use(express.static(path.join(__dirname, 'static')));
 
 app.listen({ port: 8000 }, async () => {
     await sequelize.authenticate();

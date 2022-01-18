@@ -15,6 +15,7 @@ var corsOptions = {
 app.use(express.json());
 app.use(cors(corsOptions));
 
+
 app.post('/register', (req, res) => {
 
     const obj = {
@@ -52,8 +53,8 @@ app.post('/login', (req, res) => {
                 };
         
                 const token = jwt.sign(obj, process.env.ACCESS_TOKEN_SECRET);
-                
                 res.json({ token: token });
+                
             } else {
                 res.status(400).json({ msg: "Invalid credentials"});
             }

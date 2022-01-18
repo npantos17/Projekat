@@ -1,9 +1,12 @@
 function init() {
+
+    const cookies = document.cookie.split('=');
+    const token = cookies[cookies.length - 1];
     
-    fetch('http://localhost:8000/api/cars', {
-        headers: {
-            'Authorization': `Bearer ${token}`
-        }
+    fetch('http://127.0.0.1:8000/api/cars', {
+         headers: {
+             'Authorization': `Bearer ${token}`
+         }
     })
         .then( res => res.json() )
         .then( data => {
@@ -34,7 +37,7 @@ function init() {
             document.getElementById('year').value = '';
             document.getElementById('price').value = '';
         
-            fetch('http://localhost:8000/api/cars', {
+            fetch('http://127.0.0.1:8000/api/cars', {
                 method: 'POST',
                 headers: { 
                         'Content-Type': 'application/json',
@@ -51,7 +54,7 @@ function init() {
             e.preventDefault
             var id = document.getElementById('idToDelete').value
             document.getElementById('idToDelete').value = '';
-            fetch('http://localhost:8000/api/cars/' + id, {
+            fetch('http://127.0.0.1:8000/api/cars/' + id, {
                 method: 'DELETE',
                 headers: { 
                     'Content-Type': 'application/json',
@@ -78,7 +81,7 @@ function init() {
             document.getElementById('year').value = '';
             document.getElementById('price').value = '';
             //console.log(a[0].innerHTML)
-             fetch('http://localhost:8000/api/cars/' + id, {
+             fetch('http://127.0.0.1:8000/api/cars/' + id, {
                  method: 'PUT',
                  headers: { 
                      'Content-Type': 'application/json' ,

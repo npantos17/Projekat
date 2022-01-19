@@ -24,29 +24,61 @@ app.post('/register', (req, res) => {
         admin: req.body.admin,
         password: bcrypt.hashSync(req.body.password, 10)
     };
+    const Joi = require('joi')
 
-    User.create(obj).then( rows => {
+     const sema = Joi.object().keys({
+         name : Joi.string().min(3).required(),
+         email : Joi.string().trim().email().required()
+     });
+    //   Joi.validate(req.body, sema, (err, result) => {
+    //       if(err){
+            
+    //         res.status(400).json({msg : "Greska"});
+            
+    //      }else{
+    //         User.create(obj).then( rows => {
         
-        const usr = {
-            userId: rows.id,
-            user: rows.name
-        };
-
-        const token = jwt.sign(usr, process.env.ACCESS_TOKEN_SECRET);
-
-        console.log(token);
+    //             const usr = {
+    //                 userId: rows.id,
+    //                 user: rows.name
+    //             };
         
-        res.json({ token: token });
+    //             const token = jwt.sign(usr, process.env.ACCESS_TOKEN_SECRET);
+        
+    //             console.log(token);
+                
+    //             res.json({ token: token });
+        
+    //         }).catch( err => res.status(500).json(err) );
+    //      }
+    //   }) 
 
-    }).catch( err => res.status(500).json(err) );
+     User.create(obj).then( rows => {
+        
+         const usr = {
+             userId: rows.id,
+             user: rows.name
+         };
+
+         const token = jwt.sign(usr, process.env.ACCESS_TOKEN_SECRET);
+
+         console.log(token);
+        
+         res.json({ token: token });
+
+     }).catch( err => res.status(500).json(err) );
 });
 
 app.post('/login', (req, res) => {
 
     User.findOne({ where: { name: req.body.name } })
         .then( usr => {
-
-            if (bcrypt.compareSync(req.body.password, usr.password)) {
+            
+            if(!usr){
+                res.status(400).json({ msg: "User not found"});
+               
+            }
+            else if (bcrypt.compareSync(req.body.password, usr.password)) {
                 const obj = {
                     userId: usr.id,
                     user: usr.name

@@ -11,8 +11,8 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate({Car, Order}) {
       // define association here
-      this.hasMany(Car, {foreignKey:'sellerID', as: 'cars', onDelete: 'cascade', hooks: true  })
-      this.belongsToMany(Order ,{through:'Seller_Order' })
+      //this.hasMany(Car, {foreignKey:'sellerID', as: 'cars', onDelete: 'cascade', hooks: true  })
+      //this.belongsToMany(Order ,{through:'Seller_Order' })
     }
   };
   Seller.init({

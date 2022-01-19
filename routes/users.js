@@ -1,6 +1,7 @@
 const express = require('express');
 const { sequelize, User,Car } = require('../models');
 const jwt = require('jsonwebtoken');
+const { redirect } = require('express/lib/response');
 require('dotenv').config();
 
 const route = express.Router();
@@ -33,14 +34,25 @@ route.get('/users', (req, res) => {
                 .then( rows => res.json(rows) )
                 .catch( err => res.status(500).json(err) );
         }else{
+            //res.status(301).redirect('/index.html');
             res.status(403).json({ msg: "Invalid credentials"});
-            //window.location.href = 'index.html';
+            //window.location.href = "index.html";
+            
         }
     })
     
 });
 
 route.get('/users/:id', (req, res) => {
+
+    // User.findOne({ where: { id: req.user.userId } })
+    // .then(usr => {
+    //     if(usr.admin){
+
+    //     }else{
+    //         res.status(403).json({ msg: "You are not an admin"});
+    //     }
+    // })
 
     User.findOne({ where: { id: req.params.id } })
         .then( rows => res.json(rows) )
@@ -49,36 +61,77 @@ route.get('/users/:id', (req, res) => {
 });
 
 route.post('/users', (req, res) => {
-
-    User.create({ name: req.body.name, email: req.body.email, email: req.body.email, password: req.body.password })
-        .then( rows => res.json(rows) )
-        .catch( err => res.status(500).json(err) );
+    User.findOne({ where: { id: req.user.userId } })
+    .then(usr => {
+        if(usr.admin){
+            User.create({ name: req.body.name, email: req.body.email, password: req.body.password })
+                .then( rows => res.json(rows) )
+                .catch( err => res.status(500).json(err) );
+        }else{
+            //res.status(301).redirect('/login');
+            //window.location.href = "index.html";
+            res.status(403).json({ msg: "You are not an admin"});
+        }
+    })
+    // User.create({ name: req.body.name, email: req.body.email, email: req.body.email, password: req.body.password })
+    //     .then( rows => res.json(rows) )
+    //     .catch( err => res.status(500).json(err) );
 
 });
 
 route.put('/users/:id', (req, res) => {
-    
-    User.findOne({ where: { id: req.params.id }})
-        .then( usr => {
-            usr.name = req.body.name;
-            usr.email = req.body.email;
-            usr.save()
-                .then( rows => res.json(rows) )
-                .catch( err => res.status(500).json(err) );
-        })
-        .catch( err => res.status(500).json(err) );
+    User.findOne({ where: { id: req.user.userId } })
+    .then(usr => {
+        if(usr.admin){
+            User.findOne({ where: { id: req.params.id }})
+            .then( usr => {
+                usr.name = req.body.name;
+                usr.email = req.body.email;
+                usr.save()
+                    .then( rows => res.json(rows) )
+                    .catch( err => res.status(500).json(err) );
+            })
+            .catch( err => res.status(500).json(err) );
+        }else{
+            res.status(403).json({ msg: "You are not an admin"});
+        }
+    })
+    // User.findOne({ where: { id: req.params.id }})
+    //     .then( usr => {
+    //         usr.name = req.body.name;
+    //         usr.email = req.body.email;
+    //         usr.save()
+    //             .then( rows => res.json(rows) )
+    //             .catch( err => res.status(500).json(err) );
+    //     })
+    //     .catch( err => res.status(500).json(err) );
 
 });
 
 route.delete('/users/:id', (req, res) => {
 
-    User.findOne({ where: { id: req.params.id }})
+    User.findOne({ where: { id: req.user.userId } })
+    .then(usr => {
+        if(usr.admin){
+            User.findOne({ where: { id: req.params.id }})
         .then( usr => {
             usr.destroy()
                 .then( rows => res.json(rows) )
                 .catch( err => res.status(500).json(err) );
         })
         .catch( err => res.status(500).json(err) );
+        }else{
+            res.status(403).json({ msg: "You are not an admin"});
+        }
+    })
+
+    // User.findOne({ where: { id: req.params.id }})
+    //     .then( usr => {
+    //         usr.destroy()
+    //             .then( rows => res.json(rows) )
+    //             .catch( err => res.status(500).json(err) );
+    //     })
+    //     .catch( err => res.status(500).json(err) );
 });
 
 module.exports = route;

@@ -1,22 +1,22 @@
-//const bcrypt = require('bcrypt');
-function init(){
-    
+function init() {
+
     const cookies = document.cookie.split('=');
     const token = cookies[cookies.length - 1];
-
-    fetch('http://127.0.0.1:8000/api/users', {
-        headers: {
-            'Authorization': `Bearer ${token}`
-        }
+    
+    fetch('http://127.0.0.1:8000/api/sellers', {
+         headers: {
+             'Authorization': `Bearer ${token}`
+         }
     })
         .then( res => res.json() )
         .then( data => {
-            const lst = document.getElementById('usrList');
+            const lst = document.getElementById('sellerList');
 
             data.forEach( el => {
-                lst.innerHTML += `<li class="id${el.id}">ID: ${el.id}, name: ${el.name}, Email: ${el.email}</li>`;
+                lst.innerHTML += `<li class="id${el.id}">ID: ${el.id}, Name: ${el.name}, Email: ${el.email}, Address: ${el.address}, Rating: ${el.rating}</li>`;
             });
         });
+
     
         document.getElementById('createButton').addEventListener('click', e => {
             e.preventDefault();
@@ -24,15 +24,17 @@ function init(){
             const data = {
                 name: document.getElementById('name').value,
                 email: document.getElementById('email').value,
-                password:document.getElementById('password').value,
-                admin: document.getElementById('roleAdmin').checked
+                address: document.getElementById('address').value,
+                rating: document.getElementById('rating').value
+                
             };
         
             document.getElementById('name').value = '';
             document.getElementById('email').value = '';
-            document.getElementById('password').value = '';
+            document.getElementById('address').value = '';
+            document.getElementById('rating').value = '';
         
-            fetch('http://127.0.0.1:8000/api/users', {
+            fetch('http://127.0.0.1:8000/api/sellers', {
                 method: 'POST',
                 headers: { 
                         'Content-Type': 'application/json',
@@ -42,14 +44,14 @@ function init(){
             })
                 .then( res => res.json() )
                 .then( data => {
-                    document.getElementById('usrList').innerHTML += `<li class="id${data.id}">ID: ${data.id}, Name: ${data.name}, Email: ${data.email}</li>`;
+                    document.getElementById('sellerList').innerHTML +=  `<li class="id${data.id}">ID: ${data.id}, Name: ${data.name}, Email: ${data.email}, Address: ${data.address}, Rating: ${data.rating}</li>`;
                 });
         });
         document.getElementById('deleteButton').addEventListener('click', e=>{
             e.preventDefault
             var id = document.getElementById('idToDelete').value
             document.getElementById('idToDelete').value = '';
-            fetch('http://127.0.0.1:8000/api/users/' + id, {
+            fetch('http://127.0.0.1:8000/api/sellers/' + id, {
                 method: 'DELETE',
                 headers: { 
                     'Content-Type': 'application/json',
@@ -64,15 +66,16 @@ function init(){
              const data = {
                 name: document.getElementById('name').value,
                 email: document.getElementById('email').value,
-                password: document.getElementById('password'),
-                admin: document.getElementById('roleAdmin').checked
+                address: document.getElementById('address').value,
+                rating: document.getElementById('rating').value
             };
-            //var a = document.getElementsByClassName("id"+id)
+            var a = document.getElementsByClassName("id"+id)
             document.getElementById('name').value = '';
             document.getElementById('email').value = '';
-            document.getElementById('password').value = '';
+            document.getElementById('address').value = '';
+            document.getElementById('rating').value = '';
             //console.log(a[0].innerHTML)
-             fetch('http://127.0.0.1:8000/api/users/' + id, {
+             fetch('http://127.0.0.1:8000/api/sellers/' + id, {
                  method: 'PUT',
                  headers: { 
                      'Content-Type': 'application/json' ,

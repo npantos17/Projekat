@@ -13,7 +13,7 @@ function init() {
             const lst = document.getElementById('carList');
 
             data.forEach( el => {
-                lst.innerHTML += `<li class="id${data.id}">ID: ${el.id}, sellerID: ${data.sellerID}, Brand: ${el.brand}, Model: ${el.model}</li>, Year: ${el.year}, Price: ${el.price}</li>`;
+                lst.innerHTML += `<li class="id${data.id}">ID: ${el.id}, sellerID: ${data.sellerID}, Brand: ${el.brand}, Model: ${el.model}, Year: ${el.year}, Price: ${el.price}</li>`;
             });
         });
 

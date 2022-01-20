@@ -8,6 +8,15 @@ const route = express.Router();
 route.use(express.json());
 route.use(express.urlencoded({ extended: true }));
 
+const Joi = require('joi')
+
+ const sema = Joi.object().keys({
+     name: Joi.string().required(),
+     email: Joi.string().email().required(),
+     password: Joi.string().required(),
+     admin: Joi.required()
+ })
+
 function authToken(req, res, next) {
     const authHeader = req.headers['authorization'];
     const token = authHeader && authHeader.split(' ')[1];
@@ -64,9 +73,14 @@ route.post('/users', (req, res) => {
     User.findOne({ where: { id: req.user.userId } })
     .then(usr => {
         if(usr.admin){
+            let { error } = Joi.validate(req.body, sema);
+            if(error){
+                res.status(400).json({ msg : error.details[0].message});
+            }else{
             User.create({ name: req.body.name, email: req.body.email, password: req.body.password })
                 .then( rows => res.json(rows) )
                 .catch( err => res.status(500).json(err) );
+            }
         }else{
             //res.status(301).redirect('/login');
             //window.location.href = "index.html";
@@ -83,6 +97,10 @@ route.put('/users/:id', (req, res) => {
     User.findOne({ where: { id: req.user.userId } })
     .then(usr => {
         if(usr.admin){
+            let { error } = Joi.validate(req.body, sema);
+            if(error){
+                res.status(400).json({ msg : error.details[0].message});
+            }else{
             User.findOne({ where: { id: req.params.id }})
             .then( usr => {
                 usr.name = req.body.name;
@@ -92,6 +110,7 @@ route.put('/users/:id', (req, res) => {
                     .catch( err => res.status(500).json(err) );
             })
             .catch( err => res.status(500).json(err) );
+            }
         }else{
             res.status(403).json({ msg: "You are not an admin"});
         }

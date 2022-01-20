@@ -10,7 +10,11 @@ route.use(express.urlencoded({ extended: true }));
  const Joi = require('joi')
 
  const sema = Joi.object().keys({
-     year: Joi.number().max(2022)
+     brand: Joi.required(),
+     model: Joi.required(),
+     year: Joi.number().max(2022),
+     price: Joi.required(),
+     OrderId: Joi.number()
  })
 
 function authToken(req, res, next) {
@@ -55,31 +59,32 @@ route.post('/cars', (req, res) => {
         res.status(400).json({ msg : error.details[0].message});
     }else{
 
-    Car.create({ brand: req.body.brand, model: req.body.model, year: req.body.year, price: req.body.price })
+    Car.create({ brand: req.body.brand, model: req.body.model, year: req.body.year, price: req.body.price, OrderId: req.body.OrderId })
         .then( rows => res.json(rows) )
         .catch( err => res.status(500).json(err) );
     }
 });
 
 route.put('/cars/:id', (req, res) => {
-    //let { error } = Joi.validate(req.body, sema);
-    //if(error){
-        //res.status(400).json({ msg : error.details[0].message});
-    //    res.status(400).json({ msg : "lolara"});
-    //}else{
+    let { error } = Joi.validate(req.body, sema);
+    if(error){
+        res.status(400).json({ msg : error.details[0].message});
+        //res.status(400).json({ msg : "lolara"});
+    }else{
     Car.findOne({ where: { id: req.params.id }})
         .then( car => {
             car.brand = req.body.brand;
             car.model = req.body.model;
             car.year = req.body.year;
             car.price = req.body.price;
+            car.OrderId = req.body.OrderId;
 
             car.save()
                 .then( rows => res.json(rows) )
                 .catch( err => res.status(500).json(err) );
         })
         .catch( err => res.status(500).json(err) );
-    //}
+    }
 });
 
 route.delete('/cars/:id', (req, res) => {

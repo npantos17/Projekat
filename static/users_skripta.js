@@ -73,7 +73,7 @@ function init(){
         });
          document.getElementById('putButton').addEventListener('click', e=>{
              e.preventDefault
-             var id = document.getElementById('id').value
+             var id = document.getElementById('idToDelete').value
              const data = {
                 name: document.getElementById('name').value,
                 email: document.getElementById('email').value,
@@ -81,6 +81,7 @@ function init(){
                 admin: document.getElementById('roleAdmin').checked
             };
             //var a = document.getElementsByClassName("id"+id)
+            document.getElementById('idToDelete').value = '';
             document.getElementById('name').value = '';
             document.getElementById('email').value = '';
             document.getElementById('password').value = '';

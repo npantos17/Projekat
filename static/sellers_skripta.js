@@ -44,7 +44,11 @@ function init() {
             })
                 .then( res => res.json() )
                 .then( data => {
+                    if(data.msg){
+                        alert(data.msg)
+                    }else{
                     document.getElementById('sellerList').innerHTML +=  `<li class="id${data.id}">ID: ${data.id}, Name: ${data.name}, Email: ${data.email}, Address: ${data.address}, Rating: ${data.rating}</li>`;
+                    }
                 });
         });
         document.getElementById('deleteButton').addEventListener('click', e=>{
@@ -62,14 +66,15 @@ function init() {
         });
          document.getElementById('putButton').addEventListener('click', e=>{
              e.preventDefault
-             var id = document.getElementById('id').value
+             var id = document.getElementById('idToDelete').value
              const data = {
                 name: document.getElementById('name').value,
                 email: document.getElementById('email').value,
                 address: document.getElementById('address').value,
                 rating: document.getElementById('rating').value
             };
-            var a = document.getElementsByClassName("id"+id)
+            var a = document.getElementsByClassName("idToDelete"+id)
+            document.getElementById('idToDelete').value = '';
             document.getElementById('name').value = '';
             document.getElementById('email').value = '';
             document.getElementById('address').value = '';
@@ -84,6 +89,12 @@ function init() {
                  body: JSON.stringify(data)
              })
              .then(res => res.json())
+             .then(data => {
+                if(data.msg){
+                    alert(data.msg)
+                }
+            })
+
              //.then(document.getElementsByClassName("id"+id)[0].innerHTML = `ID: ${data.id}, sellerID: ${data.sellerID}, Brand: ${data.brand}, Model: ${data.model}</li>, Year: ${data.year}, Price: ${data.price})`)
          });
 

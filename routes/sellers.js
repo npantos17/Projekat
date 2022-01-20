@@ -7,6 +7,15 @@ const route = express.Router();
 route.use(express.json());
 route.use(express.urlencoded({ extended: true }));
 
+const Joi = require('joi')
+
+ const sema = Joi.object().keys({
+     name: Joi.string().required(),
+     email: Joi.string().email().required(),
+     address: Joi.string().required(),
+     rating: Joi.number().required()
+ })
+
 function authToken(req, res, next) {
     const authHeader = req.headers['authorization'];
     const token = authHeader && authHeader.split(' ')[1];
@@ -44,14 +53,22 @@ route.get('/sellers/:id', (req, res) => {
 });
 
 route.post('/sellers', (req, res) => {
-
+    let { error } = Joi.validate(req.body, sema);
+    if(error){
+        res.status(400).json({ msg : error.details[0].message});
+    }else{
     Seller.create({ name: req.body.name, email: req.body.email, address: req.body.address, rating: req.body.rating })
         .then( rows => res.json(rows) )
         .catch( err => res.status(500).json(err) );
+    }
 
 });
 
 route.put('/sellers/:id', (req, res) => {
+    let { error } = Joi.validate(req.body, sema);
+    if(error){
+        res.status(400).json({ msg : error.details[0].message});
+    }else{
     
     Seller.findOne({ where: { id: req.params.id }})
         .then( seller => {
@@ -65,6 +82,7 @@ route.put('/sellers/:id', (req, res) => {
                 .catch( err => res.status(500).json(err) );
         })
         .catch( err => res.status(500).json(err) );
+    }
 
 });
 

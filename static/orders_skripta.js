@@ -42,7 +42,11 @@ function init() {
             })
                 .then( res => res.json() )
                 .then( data => {
+                    if(data.msg){
+                        alert(data.msg)
+                    }else{
                     document.getElementById('orderList').innerHTML += `<li class="id${data.id}">ID: ${data.id}, Car ID: ${data.CarId}, Seller ID: ${data.SellerId}, Buyer ID: ${data.buyerID}</li>`;
+                    }
                 });
         });
         document.getElementById('deleteButton').addEventListener('click', e=>{
@@ -60,13 +64,14 @@ function init() {
         });
          document.getElementById('putButton').addEventListener('click', e=>{
              e.preventDefault
-             var id = document.getElementById('id').value
+             var id = document.getElementById('idToDelete').value
              const data = {
                 CarId: document.getElementById('carID').value,
                 sellerID: document.getElementById('sellerID').value,
                 buyerID: document.getElementById('buyerID').value
             };
-            var a = document.getElementsByClassName("id"+id)
+            var a = document.getElementsByClassName("idToDelete"+id)
+            document.getElementById('idToDelete').value = '';
             document.getElementById('carID').value = '';
             document.getElementById('sellerID').value = '';
             document.getElementById('buyerID').value = '';
@@ -80,6 +85,11 @@ function init() {
                  body: JSON.stringify(data)
              })
              .then(res => res.json())
+             .then(data => {
+                 if(data.msg){
+                     alert(data.msg)
+                 }
+             })
              //.then(document.getElementsByClassName("id"+id)[0].innerHTML = `ID: ${data.id}, sellerID: ${data.sellerID}, Brand: ${data.brand}, Model: ${data.model}</li>, Year: ${data.year}, Price: ${data.price})`)
          });
 

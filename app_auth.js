@@ -28,8 +28,31 @@ app.post('/register', (req, res) => {
 
      const sema = Joi.object().keys({
          name : Joi.string().min(3).required(),
-         email : Joi.string().trim().email().required()
+         email : Joi.string().trim().email().required(),
+         password: Joi.string().required(),
+         admin: Joi.required()
      });
+
+
+     let { error } = Joi.validate(req.body, sema);
+     if(error){
+        res.status(400).json({ msg : error.details[0].message});
+     }else{
+        User.create(obj).then( rows => {
+        
+            const usr = {
+                userId: rows.id,
+                user: rows.name
+            };
+   
+            const token = jwt.sign(usr, process.env.ACCESS_TOKEN_SECRET);
+   
+            console.log(token);
+           
+            res.json({ token: token });
+   
+        }).catch( err => res.status(500).json(err) );
+     }
     //   Joi.validate(req.body, sema, (err, result) => {
     //       if(err){
             
@@ -53,20 +76,20 @@ app.post('/register', (req, res) => {
     //      }
     //   }) 
 
-     User.create(obj).then( rows => {
+    //  User.create(obj).then( rows => {
         
-         const usr = {
-             userId: rows.id,
-             user: rows.name
-         };
+    //      const usr = {
+    //          userId: rows.id,
+    //          user: rows.name
+    //      };
 
-         const token = jwt.sign(usr, process.env.ACCESS_TOKEN_SECRET);
+    //      const token = jwt.sign(usr, process.env.ACCESS_TOKEN_SECRET);
 
-         console.log(token);
+    //      console.log(token);
         
-         res.json({ token: token });
+    //      res.json({ token: token });
 
-     }).catch( err => res.status(500).json(err) );
+    //  }).catch( err => res.status(500).json(err) );
 });
 
 app.post('/login', (req, res) => {

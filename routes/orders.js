@@ -46,7 +46,7 @@ route.get('/orders/:id', (req, res) => {
 route.post('/orders', (req, res) => {
 
     //Order.create({ CarId: req.body.CarId, sellerID: req.body.sellerID, buyerID: req.body.buyerID, date: req.body.date })
-    Order.create({ CarId: req.body.CarId, sellerID: req.body.sellerID, buyerID: req.body.buyerID})
+    Order.create({ CarId: req.body.CarId, SellerId: req.body.SellerId, buyerID: req.body.buyerID})
         .then( rows => res.json(rows) )
         .catch( err => res.status(500).json(err) );
 

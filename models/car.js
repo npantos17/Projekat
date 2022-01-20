@@ -13,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
       //this.belongsTo(Seller, {foreignKey:'sellerID', as:'seller'});
       this.belongsTo(Seller);
-      this.belongsTo(Order)
+      this.hasMany(Order)
     }
   };
   Car.init({

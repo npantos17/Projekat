@@ -2,6 +2,8 @@ function init() {
 
     const cookies = document.cookie.split('=');
     const token = cookies[cookies.length - 1];
+
+    
     
     fetch('http://127.0.0.1:8000/api/cars', {
          headers: {
@@ -20,18 +22,14 @@ function init() {
     
         document.getElementById('createButton').addEventListener('click', e => {
             e.preventDefault();
-                
+            
             const data = {
-                id: document.getElementById('id').value,
-                sellerID: document.getElementById('sellerID').value,
                 brand: document.getElementById('brand').value,
                 model: document.getElementById('model').value,
                 year: document.getElementById('year').value,
                 price: document.getElementById('price').value
             };
         
-            document.getElementById('id').value = '';
-            document.getElementById('sellerID').value = '';
             document.getElementById('brand').value = '';
             document.getElementById('model').value = '';
             document.getElementById('year').value = '';
@@ -45,9 +43,14 @@ function init() {
                 },
                 body: JSON.stringify(data)
             })
+                //.then(res => alert(res.msg))
                 .then( res => res.json() )
                 .then( data => {
+                    if(data.msg){
+                        alert(data.msg)
+                    }else{
                     document.getElementById('carList').innerHTML += `<li class="id${data.id}">ID: ${data.id}, sellerID: ${data.sellerID}, Brand: ${data.brand}, Model: ${data.model}, Year: ${data.year}, Price: ${data.price}</li>`;
+                    }
                 });
         });
         document.getElementById('deleteButton').addEventListener('click', e=>{
@@ -67,15 +70,12 @@ function init() {
              e.preventDefault
              var id = document.getElementById('id').value
              const data = {
-                sellerID: document.getElementById('sellerID').value,
                 brand: document.getElementById('brand').value,
                 model: document.getElementById('model').value,
                 year: document.getElementById('year').value,
                 price: document.getElementById('price').value
             };
             var a = document.getElementsByClassName("id"+id)
-            document.getElementById('id').value = '';
-            document.getElementById('sellerID').value = '';
             document.getElementById('brand').value = '';
             document.getElementById('model').value = '';
             document.getElementById('year').value = '';

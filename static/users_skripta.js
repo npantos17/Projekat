@@ -11,11 +11,15 @@ function init(){
     })
         .then( res => res.json() )
         .then( data => {
+            if(data.msg){
+                alert(data.msg);
+            }else{
             const lst = document.getElementById('usrList');
 
             data.forEach( el => {
                 lst.innerHTML += `<li class="id${el.id}">ID: ${el.id}, name: ${el.name}, Email: ${el.email}</li>`;
             });
+        }
         });
     
         document.getElementById('createButton').addEventListener('click', e => {
@@ -42,7 +46,11 @@ function init(){
             })
                 .then( res => res.json() )
                 .then( data => {
+                    if(data.msg){
+                        alert(data.msg);
+                    }else{
                     document.getElementById('usrList').innerHTML += `<li class="id${data.id}">ID: ${data.id}, Name: ${data.name}, Email: ${data.email}</li>`;
+                    }
                 });
         });
         document.getElementById('deleteButton').addEventListener('click', e=>{
@@ -57,6 +65,11 @@ function init(){
                 }
             })
             .then(res => res.json())
+            .then(data => {
+                if(data.msg){
+                    alert(data.msg);
+                }
+            })
         });
          document.getElementById('putButton').addEventListener('click', e=>{
              e.preventDefault
@@ -81,6 +94,12 @@ function init(){
                  body: JSON.stringify(data)
              })
              .then(res => res.json())
+             .then(data => {
+                if(data.msg){
+                    alert(data.msg);
+                }
+                
+             })
              //.then(document.getElementsByClassName("id"+id)[0].innerHTML = `ID: ${data.id}, sellerID: ${data.sellerID}, Brand: ${data.brand}, Model: ${data.model}</li>, Year: ${data.year}, Price: ${data.price})`)
          });
 

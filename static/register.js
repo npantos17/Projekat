@@ -17,8 +17,12 @@ function init() {
         })
             .then( res => res.json() )
             .then( el => {
+                if(el.msg){
+                    alert(el.msg);
+                }else{
                 document.cookie = `token=${el.token};SameSite=Lax`;
                 window.location.href = 'index.html';
+                }
             });
     });
 }

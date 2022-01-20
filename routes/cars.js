@@ -7,6 +7,12 @@ const route = express.Router();
 route.use(express.json());
 route.use(express.urlencoded({ extended: true }));
 
+ const Joi = require('joi')
+
+ const sema = Joi.object().keys({
+     year: Joi.number().max(2022)
+ })
+
 function authToken(req, res, next) {
     const authHeader = req.headers['authorization'];
     const token = authHeader && authHeader.split(' ')[1];
@@ -44,15 +50,23 @@ route.get('/cars/:id', (req, res) => {
 });
 
 route.post('/cars', (req, res) => {
+    let { error } = Joi.validate(req.body, sema);
+    if(error){
+        res.status(400).json({ msg : error.details[0].message});
+    }else{
 
     Car.create({ brand: req.body.brand, model: req.body.model, year: req.body.year, price: req.body.price })
         .then( rows => res.json(rows) )
         .catch( err => res.status(500).json(err) );
-
+    }
 });
 
 route.put('/cars/:id', (req, res) => {
-    
+    //let { error } = Joi.validate(req.body, sema);
+    //if(error){
+        //res.status(400).json({ msg : error.details[0].message});
+    //    res.status(400).json({ msg : "lolara"});
+    //}else{
     Car.findOne({ where: { id: req.params.id }})
         .then( car => {
             car.brand = req.body.brand;
@@ -65,7 +79,7 @@ route.put('/cars/:id', (req, res) => {
                 .catch( err => res.status(500).json(err) );
         })
         .catch( err => res.status(500).json(err) );
-
+    //}
 });
 
 route.delete('/cars/:id', (req, res) => {

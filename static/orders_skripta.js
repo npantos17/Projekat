@@ -23,7 +23,7 @@ function init() {
                 
             const data = {
                 CarId: document.getElementById('carID').value,
-                sellerID: document.getElementById('sellerID').value,
+                SellerId: document.getElementById('sellerID').value,
                 buyerID: document.getElementById('buyerID').value
         
             };
@@ -42,7 +42,7 @@ function init() {
             })
                 .then( res => res.json() )
                 .then( data => {
-                    document.getElementById('orderList').innerHTML += `<li class="id${data.id}">ID: ${data.id}, Car ID: ${data.CarId}, Seller ID: ${data.sellerID}, Buyer ID: ${data.buyerID}</li>`;
+                    document.getElementById('orderList').innerHTML += `<li class="id${data.id}">ID: ${data.id}, Car ID: ${data.CarId}, Seller ID: ${data.SellerId}, Buyer ID: ${data.buyerID}</li>`;
                 });
         });
         document.getElementById('deleteButton').addEventListener('click', e=>{

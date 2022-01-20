@@ -11,8 +11,9 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      sellerID:{
-        type: Sequelize.INTEGER
+      SellerId:{
+        type: Sequelize.INTEGER,
+        allowNull:false
       },
       brand: {
         type: Sequelize.STRING

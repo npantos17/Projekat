@@ -10,6 +10,7 @@ route.use(express.urlencoded({ extended: true }));
  const Joi = require('joi')
 
  const sema = Joi.object().keys({
+     //SellerId: Joi.number().required(),
      brand: Joi.required(),
      model: Joi.required(),
      year: Joi.number().max(2022),
@@ -73,6 +74,7 @@ route.put('/cars/:id', (req, res) => {
     }else{
     Car.findOne({ where: { id: req.params.id }})
         .then( car => {
+            //car.SellerId = req.body.SellerId;
             car.brand = req.body.brand;
             car.model = req.body.model;
             car.year = req.body.year;

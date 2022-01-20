@@ -24,13 +24,14 @@ function init() {
             e.preventDefault();
             
             const data = {
+                //SellerId: document.getElementById('sellerID'),
                 brand: document.getElementById('brand').value,
                 model: document.getElementById('model').value,
                 year: document.getElementById('year').value,
                 price: document.getElementById('price').value,
                 OrderId: document.getElementById('OrderId').value
             };
-        
+            //document.getElementById('sellerID').value = '';
             document.getElementById('brand').value = '';
             document.getElementById('model').value = '';
             document.getElementById('year').value = '';
@@ -72,6 +73,7 @@ function init() {
              e.preventDefault
              var id = document.getElementById('idToDelete').value
              const data = {
+                //SellerId: document.getElementById('sellerID'),
                 brand: document.getElementById('brand').value,
                 model: document.getElementById('model').value,
                 year: document.getElementById('year').value,
@@ -80,6 +82,7 @@ function init() {
             };
             var a = document.getElementsByClassName("id"+id)
             document.getElementById('idToDelete').value = '';
+            //document.getElementById('sellerID').value = '';
             document.getElementById('brand').value = '';
             document.getElementById('model').value = '';
             document.getElementById('year').value = '';

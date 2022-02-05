@@ -3,7 +3,7 @@ function init() {
     const cookies = document.cookie.split('=');
     const token = cookies[cookies.length - 1];
     
-    fetch('http://127.0.0.1:8000/api/orders', {
+    fetch('http://127.0.0.1:8000/admin/orders', {
          headers: {
              'Authorization': `Bearer ${token}`
          }
@@ -32,7 +32,7 @@ function init() {
             document.getElementById('sellerID').value = '';
             document.getElementById('buyerID').value = '';
         
-            fetch('http://127.0.0.1:8000/api/orders', {
+            fetch('http://127.0.0.1:8000/admin/orders', {
                 method: 'POST',
                 headers: { 
                         'Content-Type': 'application/json',
@@ -53,7 +53,7 @@ function init() {
             e.preventDefault
             var id = document.getElementById('idToDelete').value
             document.getElementById('idToDelete').value = '';
-            fetch('http://127.0.0.1:8000/api/orders/' + id, {
+            fetch('http://127.0.0.1:8000/admin/orders/' + id, {
                 method: 'DELETE',
                 headers: { 
                     'Content-Type': 'application/json',
@@ -76,7 +76,7 @@ function init() {
             document.getElementById('sellerID').value = '';
             document.getElementById('buyerID').value = '';
             //console.log(a[0].innerHTML)
-             fetch('http://127.0.0.1:8000/api/orders/' + id, {
+             fetch('http://127.0.0.1:8000/admin/orders/' + id, {
                  method: 'PUT',
                  headers: { 
                      'Content-Type': 'application/json' ,

@@ -5,7 +5,7 @@ function init() {
 
     
     
-    fetch('http://127.0.0.1:8000/api/cars', {
+    fetch('http://127.0.0.1:8000/admin/cars', {
          headers: {
              'Authorization': `Bearer ${token}`
          }
@@ -38,7 +38,7 @@ function init() {
             document.getElementById('price').value = '';
             document.getElementById('OrderId').value = '';
         
-            fetch('http://127.0.0.1:8000/api/cars', {
+            fetch('http://127.0.0.1:8000/admin/cars', {
                 method: 'POST',
                 headers: { 
                         'Content-Type': 'application/json',
@@ -52,15 +52,16 @@ function init() {
                     if(data.msg){
                         alert(data.msg)
                     }else{
-                    document.getElementById('carList').innerHTML += `<li class="id${data.id}">ID: ${data.id}, sellerID: ${data.sellerID}, Brand: ${data.brand}, Model: ${data.model}, Year: ${data.year}, Price: ${data.price}, Order ID: ${data.OrderId}</li>`;
+                    document.getElementById('carList').innerHTML += `<li id="id${data.id}">ID: ${data.id}, sellerID: ${data.sellerID}, Brand: ${data.brand}, Model: ${data.model}, Year: ${data.year}, Price: ${data.price}, Order ID: ${data.OrderId}</li>`;
                     }
                 });
         });
         document.getElementById('deleteButton').addEventListener('click', e=>{
             e.preventDefault
             var id = document.getElementById('idToDelete').value
+            var a = document.getElementById("id"+id)
             document.getElementById('idToDelete').value = '';
-            fetch('http://127.0.0.1:8000/api/cars/' + id, {
+            fetch('http://127.0.0.1:8000/admin/cars/' + id, {
                 method: 'DELETE',
                 headers: { 
                     'Content-Type': 'application/json',
@@ -68,6 +69,7 @@ function init() {
                 }
             })
             .then(res => res.json())
+            .then(a.innerHTML = '')
         });
          document.getElementById('putButton').addEventListener('click', e=>{
              e.preventDefault
@@ -80,7 +82,7 @@ function init() {
                 price: document.getElementById('price').value,
                 OrderId: document.getElementById('OrderId').value
             };
-            var a = document.getElementsByClassName("id"+id)
+            var a = document.getElementById("id"+id)
             document.getElementById('idToDelete').value = '';
             //document.getElementById('sellerID').value = '';
             document.getElementById('brand').value = '';
@@ -89,7 +91,7 @@ function init() {
             document.getElementById('price').value = '';
             document.getElementById('OrderId').value = '';
             //console.log(a[0].innerHTML)
-             fetch('http://127.0.0.1:8000/api/cars/' + id, {
+             fetch('http://127.0.0.1:8000/admin/cars/' + id, {
                  method: 'PUT',
                  headers: { 
                      'Content-Type': 'application/json' ,
@@ -103,7 +105,7 @@ function init() {
                      alert(data.msg)
                  }
              })
-             //.then(document.getElementsByClassName("id"+id)[0].innerHTML = `ID: ${data.id}, sellerID: ${data.sellerID}, Brand: ${data.brand}, Model: ${data.model}</li>, Year: ${data.year}, Price: ${data.price})`)
+             .then(a.innerHTML = `ID: ${data.id}, sellerID: ${data.sellerID}, Brand: ${data.brand}, Model: ${data.model}</li>, Year: ${data.year}, Price: ${data.price})`)
          });
 
 }

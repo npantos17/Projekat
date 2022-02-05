@@ -6,14 +6,35 @@ const sellers = require('./routes/sellers')
 const users = require('./routes/users')
 const path = require('path');
 const jwt = require('jsonwebtoken');
+const cors = require('cors')
+const http = require('http');
+const { Server } = require("socket.io");
 require('dotenv').config();
 
 const app = express();
 
-app.use('/api', cars)
-app.use('/api', orders)
-app.use('/api', sellers)
-app.use('/api', users)
+const server = http.createServer(app);
+const io = new Server(server, {
+    cors: {
+        origin: 'http://127.0.0.1:8080',
+        methods: ['GET', 'POST'],
+        credentials: true
+    },
+    allowEIO3: true
+});
+
+var corsOptions = {
+    origin: 'http://127.0.0.1:8080',
+    optionsSuccessStatus: 200
+}
+
+app.use(express.json())
+app.use(cors(corsOptions))
+
+app.use('/admin', cars)
+app.use('/admin', orders)
+app.use('/admin', sellers)
+app.use('/admin', users)
 
 function getCookies(req) {
     if (req.headers.cookie == null) return {};

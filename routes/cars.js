@@ -38,7 +38,7 @@ function authToken(req, res, next) {
 
 route.use(authToken);
 
-route.get('/cars', (req, res) => {
+route.get('/all', (req, res) => {
 
     Car.findAll()
         .then( rows => res.json(rows) )

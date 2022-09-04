@@ -16,20 +16,21 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
     cors: {
-        origin: 'http://127.0.0.1:8080',
-        methods: ['GET', 'POST'],
+        // origin: 'http://127.0.0.1:8080',
+        origin: '*',
+        methods: ['GET', 'POST', 'PUT'],
         credentials: true
     },
     allowEIO3: true
 });
 
-var corsOptions = {
-    origin: 'http://127.0.0.1:8080',
-    optionsSuccessStatus: 200
-}
+// var corsOptions = {
+//     origin: 'http://127.0.0.1:8080',
+//     optionsSuccessStatus: 200
+// }
 
 app.use(express.json())
-app.use(cors(corsOptions))
+// app.use(cors(corsOptions))
 
 app.use('/admin', cars)
 app.use('/admin', orders)

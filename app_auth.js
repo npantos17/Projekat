@@ -7,8 +7,13 @@ require('dotenv').config();
 
 const app = express();
 
+// var corsOptions = {
+//     origin: 'http://127.0.0.1:8000',
+//     optionsSuccessStatus: 200
+// }
 var corsOptions = {
-    origin: 'http://127.0.0.1:8000',
+    // origin: 'http://127.0.0.1:8080',
+    origin: '*',
     optionsSuccessStatus: 200
 }
 
@@ -53,46 +58,9 @@ app.post('/register', (req, res) => {
    
         }).catch( err => res.status(500).json(err) );
      }
-    //   Joi.validate(req.body, sema, (err, result) => {
-    //       if(err){
-            
-    //         res.status(400).json({msg : "Greska"});
-            
-    //      }else{
-    //         User.create(obj).then( rows => {
-        
-    //             const usr = {
-    //                 userId: rows.id,
-    //                 user: rows.name
-    //             };
-        
-    //             const token = jwt.sign(usr, process.env.ACCESS_TOKEN_SECRET);
-        
-    //             console.log(token);
-                
-    //             res.json({ token: token });
-        
-    //         }).catch( err => res.status(500).json(err) );
-    //      }
-    //   }) 
-
-    //  User.create(obj).then( rows => {
-        
-    //      const usr = {
-    //          userId: rows.id,
-    //          user: rows.name
-    //      };
-
-    //      const token = jwt.sign(usr, process.env.ACCESS_TOKEN_SECRET);
-
-    //      console.log(token);
-        
-    //      res.json({ token: token });
-
-    //  }).catch( err => res.status(500).json(err) );
 });
 
-app.post('/login', (req, res) => {
+app.post('/api_login', (req, res) => {
 
     User.findOne({ where: { name: req.body.name } })
         .then( usr => {

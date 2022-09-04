@@ -12,7 +12,7 @@ const { Server } = require("socket.io");
 require('dotenv').config();
 
 const app = express();
-const a;
+// const a;
 const server = http.createServer(app);
 const io = new Server(server, {
     cors: {

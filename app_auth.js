@@ -12,7 +12,6 @@ const app = express();
 //     optionsSuccessStatus: 200
 // }
 var corsOptions = {
-    // origin: 'http://127.0.0.1:8080',
     origin: '*',
     optionsSuccessStatus: 200
 }

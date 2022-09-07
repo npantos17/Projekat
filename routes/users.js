@@ -69,7 +69,7 @@ route.get('/:id', (req, res) => {
 
 });
 
-route.post('/', (req, res) => {
+route.post('/', authToken, (req, res) => {
     User.findOne({ where: { id: req.user.userId } })
     .then(usr => {
         if(usr.admin){
@@ -93,7 +93,7 @@ route.post('/', (req, res) => {
 
 });
 
-route.put('/:id', (req, res) => {
+route.put('/:id', authToken, (req, res) => {
     User.findOne({ where: { id: req.user.userId } })
     .then(usr => {
         if(usr.admin){
@@ -127,7 +127,7 @@ route.put('/:id', (req, res) => {
 
 });
 
-route.delete('/:id', (req, res) => {
+route.delete('/:id', authToken, (req, res) => {
 
     User.findOne({ where: { id: req.user.userId } })
     .then(usr => {

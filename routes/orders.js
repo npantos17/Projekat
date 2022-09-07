@@ -52,7 +52,7 @@ route.get('/:id', (req, res) => {
 
 });
 
-route.post('/', (req, res) => {
+route.post('/', authToken,(req, res) => {
     let { error } = Joi.validate(req.body, sema);
     if(error){
         res.status(400).json({ msg : error.details[0].message});
@@ -64,7 +64,7 @@ route.post('/', (req, res) => {
     }
 });
 
-route.put('/:id', (req, res) => {
+route.put('/:id', authToken,(req, res) => {
     
     let { error } = Joi.validate(req.body, sema);
     if(error){
@@ -86,7 +86,7 @@ route.put('/:id', (req, res) => {
 
 });
 
-route.delete('/:id', (req, res) => {
+route.delete('/:id', authToken, (req, res) => {
 
     Order.findOne({ where: { id: req.params.id }})
         .then( order => {

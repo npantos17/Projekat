@@ -36,17 +36,21 @@ function authToken(req, res, next) {
     });
 }
 
-route.use(authToken);
+// route.use(authToken);
 
+// route.get('/cars', (req, res) => {
 route.get('/all', (req, res) => {
 
     Car.findAll()
-        .then( rows => res.json(rows) )
+        .then( rows => 
+            // console.log(rows),
+            res.json(rows) )
         .catch( err => res.status(500).json(err) );
     
 });
 
-route.get('/cars/:id', (req, res) => {
+// route.get('/cars/:id', (req, res) => {
+route.get('/:id', (req, res) => {
 
     Car.findOne({ where: { id: req.params.id } })
         .then( rows => res.json(rows) )
@@ -54,7 +58,8 @@ route.get('/cars/:id', (req, res) => {
 
 });
 
-route.post('/cars', (req, res) => {
+// route.post('/cars', (req, res) => {
+route.post('/', authToken, (req, res) => {
     let { error } = Joi.validate(req.body, sema);
     if(error){
         res.status(400).json({ msg : error.details[0].message});
@@ -66,7 +71,8 @@ route.post('/cars', (req, res) => {
     }
 });
 
-route.put('/cars/:id', (req, res) => {
+// route.put('/cars/:id', (req, res) => {
+route.put('/:id', authToken, (req, res) => {
     let { error } = Joi.validate(req.body, sema);
     if(error){
         res.status(400).json({ msg : error.details[0].message});
@@ -89,7 +95,8 @@ route.put('/cars/:id', (req, res) => {
     }
 });
 
-route.delete('/cars/:id', (req, res) => {
+// route.delete('/cars/:id', (req, res) => {
+route.delete('/:id', authToken, (req, res) => {
 
     Car.findOne({ where: { id: req.params.id }})
         .then( car => {

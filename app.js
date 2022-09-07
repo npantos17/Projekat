@@ -6,10 +6,14 @@ const sellers = require('./routes/sellers')
 const users = require('./routes/users')
 const path = require('path');
 const jwt = require('jsonwebtoken');
-const cors = require('cors')
+const cors = require('cors');
 const http = require('http');
 const { Server } = require("socket.io");
+const history = require('connect-history-api-fallback');
 require('dotenv').config();
+const Joi = require('joi');
+const bcrypt = require('bcrypt');
+const { raw } = require('express');
 
 const app = express();
 // const a;
@@ -29,13 +33,13 @@ const io = new Server(server, {
 //     optionsSuccessStatus: 200
 // }
 
-app.use(express.json())
+// app.use(express.json())
 // app.use(cors(corsOptions))
 
-app.use('/admin', cars)
-app.use('/admin', orders)
-app.use('/admin', sellers)
-app.use('/admin', users)
+// app.use('/admin', cars)
+// app.use('/admin', orders)
+// app.use('/admin', sellers)
+// app.use('/admin', users)
 
 function getCookies(req) {
     if (req.headers.cookie == null) return {};
@@ -67,22 +71,48 @@ function authToken(req, res, next) {
     });
 }
 
+function authSocket(msg, next) {
+    if (msg[1].token == null) {
+        next(new Error("Not authenticated"));
+    } else {
+        jwt.verify(msg[1].token, process.env.ACCESS_TOKEN_SECRET, (err, user) => {
+            if (err) {
+                next(new Error(err));
+            } else {
+                msg[1].user = user;
+                next();
+            }
+        });
+    }
+}
 
-app.get('/register', (req, res) => {
-    res.sendFile('register.html', { root: './static' });
-});
+// app.get('/register', (req, res) => {
+//     res.sendFile('register.html', { root: './static' });
+// });
 
-app.get('/login', (req, res) => {
-    res.sendFile('login.html', { root: './static' });
-});
+// app.get('/login', (req, res) => {
+//     res.sendFile('login.html', { root: './static' });
+// });
 
-app.get('/', authToken, (req, res) => {
-    res.sendFile('index.html', { root: './static' });
-});
+// app.get('/', authToken, (req, res) => {
+//     res.sendFile('index.html', { root: './static' });
+// });
 
 
-app.use(express.static(path.join(__dirname, 'static')));
+// app.use(express.static(path.join(__dirname, 'static')));
 
-app.listen({ port: 8000 }, async () => {
+
+const staticMdl = express.static(path.join(__dirname, 'dist'));
+app.use(staticMdl);
+app.use(history({ index: '/index.html' }));
+app.use(staticMdl);
+
+
+// app.listen({ port: 8000 }, async () => {
+//     await sequelize.authenticate();
+// });
+
+server.listen({ port: 8000 }, async () => {
     await sequelize.authenticate();
+    console.log("startovan app");
 });

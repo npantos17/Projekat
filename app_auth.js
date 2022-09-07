@@ -20,7 +20,7 @@ app.use(express.json());
 app.use(cors(corsOptions));
 
 
-app.post('/register', (req, res) => {
+app.post('/api_register', (req, res) => {
 
     const obj = {
         name: req.body.name,

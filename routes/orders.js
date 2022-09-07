@@ -34,9 +34,9 @@ function authToken(req, res, next) {
     });
 }
 
-route.use(authToken);
+// route.use(authToken);
 
-route.get('/orders', (req, res) => {
+route.get('/all', (req, res) => {
 
     Order.findAll()
         .then( rows => res.json(rows) )
@@ -44,7 +44,7 @@ route.get('/orders', (req, res) => {
     
 });
 
-route.get('/orders/:id', (req, res) => {
+route.get('/:id', (req, res) => {
 
     Order.findOne({ where: { id: req.params.id } })
         .then( rows => res.json(rows) )
@@ -52,7 +52,7 @@ route.get('/orders/:id', (req, res) => {
 
 });
 
-route.post('/orders', (req, res) => {
+route.post('/', (req, res) => {
     let { error } = Joi.validate(req.body, sema);
     if(error){
         res.status(400).json({ msg : error.details[0].message});
@@ -64,7 +64,7 @@ route.post('/orders', (req, res) => {
     }
 });
 
-route.put('/orders/:id', (req, res) => {
+route.put('/:id', (req, res) => {
     
     let { error } = Joi.validate(req.body, sema);
     if(error){
@@ -86,7 +86,7 @@ route.put('/orders/:id', (req, res) => {
 
 });
 
-route.delete('/orders/:id', (req, res) => {
+route.delete('/:id', (req, res) => {
 
     Order.findOne({ where: { id: req.params.id }})
         .then( order => {

@@ -33,26 +33,26 @@ function authToken(req, res, next) {
     });
 }
 
-route.use(authToken);
+// route.use(authToken);
 
-route.get('/users', (req, res) => {
-    User.findOne({ where: { id: req.user.userId } })
-    .then(usr => {
-        if(usr.admin){
+route.get('/all', (req, res) => {
+    // User.findOne({ where: { id: req.user.id } })
+    // .then(usr => {
+    //     if(usr.admin){
             User.findAll()
                 .then( rows => res.json(rows) )
                 .catch( err => res.status(500).json(err) );
-        }else{
-            //res.status(301).redirect('/index.html');
-            res.status(403).json({ msg: "Invalid credentials"});
-            //window.location.href = "index.html";
+        // }else{
+        //     //res.status(301).redirect('/index.html');
+        //     res.status(403).json({ msg: "Invalid credentials"});
+        //     //window.location.href = "index.html";
             
-        }
-    })
+        // }
+    // })
     
 });
 
-route.get('/users/:id', (req, res) => {
+route.get('/:id', (req, res) => {
 
     // User.findOne({ where: { id: req.user.userId } })
     // .then(usr => {
@@ -69,7 +69,7 @@ route.get('/users/:id', (req, res) => {
 
 });
 
-route.post('/users', (req, res) => {
+route.post('/', (req, res) => {
     User.findOne({ where: { id: req.user.userId } })
     .then(usr => {
         if(usr.admin){
@@ -93,7 +93,7 @@ route.post('/users', (req, res) => {
 
 });
 
-route.put('/users/:id', (req, res) => {
+route.put('/:id', (req, res) => {
     User.findOne({ where: { id: req.user.userId } })
     .then(usr => {
         if(usr.admin){
@@ -127,7 +127,7 @@ route.put('/users/:id', (req, res) => {
 
 });
 
-route.delete('/users/:id', (req, res) => {
+route.delete('/:id', (req, res) => {
 
     User.findOne({ where: { id: req.user.userId } })
     .then(usr => {

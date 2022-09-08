@@ -128,7 +128,7 @@ app.use(staticMdl);
 //     await sequelize.authenticate();
 // });
 
-server.listen({ port: 8000 }, async () => {
+server.listen({ port: process.env.PORT || 8000 }, async () => {
     await sequelize.authenticate();
     console.log("startovan app");
 });

@@ -86,6 +86,22 @@ function authSocket(msg, next) {
     }
 }
 
+io.on('connection', socket => {
+    socket.use(authSocket);
+
+    /* socket.on('comment', msg => {
+        socket.on('comment', msg => {
+            Messages.create({ body: msg.body, artId: msg.artId, userId: msg.user.userId })
+                .then( rows => {
+                    Messages.findOne({ where: { id: rows.id }, include: ['user'] })
+                        .then( msg => io.emit('comment', JSON.stringify(msg)) ) 
+                }).catch( err => res.status(500).json(err) );
+        });
+    }); */
+
+    socket.on('error', err => socket.emit('error', err.message) );
+});
+
 // app.get('/register', (req, res) => {
 //     res.sendFile('register.html', { root: './static' });
 // });
